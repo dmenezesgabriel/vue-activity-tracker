@@ -1,7 +1,10 @@
 <template>
-  <main class="columns is-gapless is-multiline dark-theme">
+  <main
+    class="columns is-gapless is-multiline"
+    :class="{ 'dark-theme': isDarkThemeActive }"
+  >
     <div class="column is-one-quarter">
-      <SideBar />
+      <SideBar @onThemeToggle="switchTheme" />
     </div>
     <div class="column is-three-quarter content">
       <TaskForm @onEndTask="saveTask" />
@@ -23,7 +26,7 @@ import TaskBox from "./components/TaskBox.vue";
 export default defineComponent({
   name: "App",
   data() {
-    return { tasks: [] as ITask[] };
+    return { tasks: [] as ITask[], isDarkThemeActive: false };
   },
   components: {
     SideBar,
@@ -34,6 +37,10 @@ export default defineComponent({
   methods: {
     saveTask(task: ITask): void {
       this.tasks.push(task);
+    },
+    switchTheme(isDarkThemeActive: boolean) {
+      console.log(`is: ${isDarkThemeActive}`);
+      this.isDarkThemeActive = isDarkThemeActive;
     },
   },
   computed: {
