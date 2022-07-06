@@ -5,13 +5,15 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
+import { defineComponent } from "vue";
 export default defineComponent({
   name: "TimeDisplay",
-  props: {timeInSeconds: {type: Number, default: 0}},
+  props: { timeInSeconds: { type: Number, default: 0 } },
   computed: {
     elapsedTime() {
-      return new Date(this.timeInSeconds * 1000).toISOString().substring(11, 19);
+      return new Date(this.timeInSeconds * 1000)
+        .toISOString()
+        .substring(11, 19);
     },
   },
 });

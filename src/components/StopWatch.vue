@@ -17,13 +17,13 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
+import { defineComponent } from "vue";
 import TimeDisplay from "./TimeDisplay.vue";
 export default defineComponent({
   name: "StopWatch",
   emits: ["onStopWatchStopped"],
   data() {
-    return {timeInSeconds: 0, cronRef: 0, isRunning: false};
+    return { timeInSeconds: 0, cronRef: 0, isRunning: false };
   },
   components: {
     TimeDisplay,

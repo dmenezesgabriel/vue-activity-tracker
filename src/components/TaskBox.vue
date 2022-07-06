@@ -3,8 +3,8 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
-export default defineComponent({name: "TaskBox"});
+import { defineComponent } from "vue";
+export default defineComponent({ name: "TaskBox" });
 </script>
 
 <style scoped>
