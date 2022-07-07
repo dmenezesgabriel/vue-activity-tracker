@@ -2,7 +2,7 @@
   <div class="box form">
     <div class="columns">
       <div
-        class="column is-8"
+        class="column is-5"
         role="TaskForm"
         aria-label="TaskForm for new task creation"
       >
@@ -15,6 +15,20 @@
           v-model="taskDescription"
         />
       </div>
+      <div class="column is-3">
+        <div class="select">
+          <select name="" id="" v-model="projectId">
+            <option value="">Select Project</option>
+            <option
+              :value="project.id"
+              v-for="project in projects"
+              :key="project.id"
+            >
+              {{ project.name }}
+            </option>
+          </select>
+        </div>
+      </div>
       <div class="column">
         <StopWatch @onStopWatchStopped="endTask" />
       </div>
@@ -23,13 +37,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, computed } from "vue";
 import StopWatch from "./StopWatch.vue";
+import { useProjectStore } from "@/store/project";
 export default defineComponent({
   name: "TaskForm",
   emits: ["onEndTask"],
   data() {
-    return { taskDescription: "" };
+    return { taskDescription: "", projectId: "" };
   },
   components: {
     StopWatch,
@@ -39,9 +54,16 @@ export default defineComponent({
       this.$emit("onEndTask", {
         timeInSeconds: timeInSeconds,
         description: this.taskDescription,
+        project: this.projects.find((project) => project.id == this.projectId),
       });
       this.taskDescription = "";
     },
+  },
+  setup() {
+    const projectStore = useProjectStore();
+    return {
+      projects: computed(() => projectStore.$state.projects),
+    };
   },
 });
 </script>
