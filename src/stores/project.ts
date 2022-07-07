@@ -19,5 +19,9 @@ export const useProjectStore = defineStore({
       } as IProject;
       this.projects.push(project);
     },
+    updateProject(project: IProject) {
+      const index = this.projects.findIndex((proj) => proj.id == project.id);
+      this.projects[index] = project;
+    },
   },
 });

@@ -1,31 +1,31 @@
 <template>
   <section class="projects">
     <h1 class="title">Projects</h1>
-    <form @submit.prevent="save">
-      <div class="field">
-        <label for="projectName" class="label">Project Name</label>
-        <input
-          type="text"
-          class="input"
-          v-model="projectName"
-          id="projectName"
-        />
-      </div>
-      <div class="field">
-        <button type="submit" class="button">Save</button>
-      </div>
-    </form>
+    <RouterLink to="/projects/add" class="button">
+      <span class="is-small">
+        <i class="fas fa-plus"></i>
+      </span>
+      <span>New Project</span>
+    </RouterLink>
     <table class="table is-full-width">
       <thead>
         <tr>
           <th>Id</th>
           <th>Name</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="project in projects" :key="project.id">
           <td>{{ project.id }}</td>
           <td>{{ project.name }}</td>
+          <td>
+            <RouterLink :to="`/projects/${project.id}`" class="button">
+              <span class="icon is-small">
+                <i class="fas fa-pencil-alt"></i>
+              </span>
+            </RouterLink>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -39,21 +39,9 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "Projects",
-  data() {
-    return {
-      projectName: "",
-    };
-  },
-  methods: {
-    save() {
-      this.projectStore.addProject(this.projectName);
-      this.projectName = "";
-    },
-  },
   setup() {
     const projectStore = useProjectStore();
     return {
-      projectStore,
       projects: computed(() => projectStore.$state.projects),
     };
   },
