@@ -39,7 +39,7 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import StopWatch from "./StopWatch.vue";
-import { useProjectStore } from "@/store/project";
+import { useProjectStore } from "@/stores/project";
 export default defineComponent({
   name: "TaskForm",
   emits: ["onEndTask"],

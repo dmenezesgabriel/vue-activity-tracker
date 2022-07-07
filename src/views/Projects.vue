@@ -33,26 +33,29 @@
 </template>
 
 <script lang="ts">
+import { useProjectStore } from "@/stores/project";
+import { computed } from "@vue/reactivity";
 import { defineComponent } from "vue";
-import type IProject from "../interfaces/IProject";
 
 export default defineComponent({
   name: "Projects",
   data() {
     return {
       projectName: "",
-      projects: [] as IProject[],
     };
   },
   methods: {
     save() {
-      const project: IProject = {
-        name: this.projectName,
-        id: new Date().toISOString(),
-      };
-      this.projects.push(project);
+      this.projectStore.addProject(this.projectName);
       this.projectName = "";
     },
+  },
+  setup() {
+    const projectStore = useProjectStore();
+    return {
+      projectStore,
+      projects: computed(() => projectStore.$state.projects),
+    };
   },
 });
 </script>
