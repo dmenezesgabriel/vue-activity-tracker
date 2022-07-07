@@ -5,6 +5,20 @@
       <span>Activity Tracker</span>
     </h1>
     <button class="button" @click="changeTheme">{{ buttonInnerText }}</button>
+    <nav class="panel m-5">
+      <ul>
+        <li>
+          <RouterLink class="link" to="/"
+            ><i class="fas fa-tasks"></i>Tasks</RouterLink
+          >
+        </li>
+        <li>
+          <RouterLink class="link" to="/projects"
+            ><i class="fas fa-project-diagram"></i>Projects</RouterLink
+          >
+        </li>
+      </ul>
+    </nav>
   </header>
 </template>
 
@@ -53,5 +67,19 @@ header span {
     padding: 2.5rem;
     height: auto;
   }
+}
+
+.panel li {
+  margin: 8px;
+}
+
+.link {
+  color: #fff;
+}
+.link:hover {
+  color: #faf0ca;
+}
+.link.router-link-active {
+  color: #faf0ca;
 }
 </style>
