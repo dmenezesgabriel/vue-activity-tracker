@@ -22,6 +22,7 @@ import { NotificationType } from "@/interfaces/INotification";
 import { useProjectStore } from "@/stores/project";
 import { defineComponent } from "vue";
 import useNotifier from "@/hooks/notifier";
+
 export default defineComponent({
   name: "Form",
   props: {
@@ -29,22 +30,41 @@ export default defineComponent({
       type: String,
     },
   },
-
   data() {
     return {
       projectName: "",
     };
   },
   methods: {
-    save() {
+    save(): void {
+      /**
+       * Persists a project
+       * @returns {void}
+       */
+
+      /**
+       * This conditional allow us to use the same form template to add or
+       * update a project
+       */
       if (this.id) {
-        this.projectStore.updateProject({
-          id: this.id,
-          name: this.projectName,
-        });
+        this.projectStore
+          .updateProject({
+            id: this.id,
+            name: this.projectName,
+          })
+          .then(() => {
+            this.handleSuccess();
+          });
       } else {
-        this.projectStore.addProject(this.projectName);
+        this.projectStore.createProject(this.projectName).then(() => {
+          this.handleSuccess();
+        });
       }
+    },
+    handleSuccess() {
+      /**
+       * Handle action success
+       */
       this.projectName = "";
       this.notify(
         NotificationType.SUCCESS,
@@ -63,9 +83,13 @@ export default defineComponent({
     };
   },
   mounted() {
+    /**
+     * Conditional for edit form
+     */
     if (this.id) {
+      console.log(this.projectStore.$state.projects);
       const project = this.projectStore.$state.projects.find(
-        (project) => project.id === this.id
+        (project) => project.id == this.id
       );
       this.projectName = project?.name || "";
     }

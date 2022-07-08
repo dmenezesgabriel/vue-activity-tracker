@@ -44,12 +44,18 @@ import { defineComponent } from "vue";
 export default defineComponent({
   name: "List",
   methods: {
-    remove(id: String) {
-      this.projectStore.removeProject(id);
+    remove(id: string): void {
+      /**
+       * Removes a project from List
+       * @param {string} id
+       * @returns {void}
+       */
+      this.projectStore.deleteProject(id);
     },
   },
   setup() {
     const projectStore = useProjectStore();
+    projectStore.getProjects();
     return {
       projectStore,
       projects: computed(() => projectStore.$state.projects),

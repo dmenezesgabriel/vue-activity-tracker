@@ -1,12 +1,18 @@
 import {
   createRouter,
   createWebHashHistory,
+  type Router,
   type RouteRecordRaw,
 } from "vue-router";
 import Tasks from "../views/Tasks.vue";
 import Projects from "@/views/Projects.vue";
 import Form from "@/views/projects/Form.vue";
 import List from "@/views/projects/List.vue";
+
+/**
+ * @constant
+ * @type {Array<RouteRecordRaw>}
+ */
 const routes: Array<RouteRecordRaw> = [
   { path: "/", name: "Tasks", component: Tasks },
   {
@@ -24,7 +30,12 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
 ];
-const router = createRouter({
+
+/**
+ * @constant
+ * @type {Router}
+ */
+const router: Router = createRouter({
   history: createWebHashHistory(),
   routes: routes,
 });
