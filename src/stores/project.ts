@@ -6,7 +6,7 @@ interface State {
 }
 
 export const useProjectStore = defineStore({
-  id: "main",
+  id: "project",
   state: () =>
     ({
       projects: [],
@@ -22,6 +22,9 @@ export const useProjectStore = defineStore({
     updateProject(project: IProject) {
       const index = this.projects.findIndex((proj) => proj.id == project.id);
       this.projects[index] = project;
+    },
+    removeProject(id: String) {
+      this.projects = this.projects.filter((proj) => proj.id != id);
     },
   },
 });

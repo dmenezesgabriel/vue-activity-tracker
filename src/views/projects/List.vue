@@ -24,6 +24,11 @@
                 <i class="fas fa-pencil-alt"></i>
               </span>
             </RouterLink>
+            <button class="button ml-2 is-danger" @click="remove(project.id)">
+              <span class="icon is-small">
+                <i class="fas fa-trash"></i>
+              </span>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -38,9 +43,15 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "List",
+  methods: {
+    remove(id: String) {
+      this.projectStore.removeProject(id);
+    },
+  },
   setup() {
     const projectStore = useProjectStore();
     return {
+      projectStore,
       projects: computed(() => projectStore.$state.projects),
     };
   },

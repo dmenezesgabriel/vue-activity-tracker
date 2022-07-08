@@ -7,6 +7,7 @@
       <SideBar @onThemeToggle="switchTheme" />
     </div>
     <div class="column is-three-quarter content">
+      <Notifications />
       <RouterView />
     </div>
   </main>
@@ -15,6 +16,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import SideBar from "./components/SideBar.vue";
+import Notifications from "./components/Notifications.vue";
 export default defineComponent({
   name: "App",
   data() {
@@ -22,6 +24,7 @@ export default defineComponent({
   },
   components: {
     SideBar,
+    Notifications,
   },
   methods: {
     switchTheme(isDarkThemeActive: boolean) {
