@@ -1,4 +1,4 @@
-import { type INotification } from "@/interfaces/INotification";
+import type { INotification } from "@/interfaces/INotification";
 import { defineStore } from "pinia";
 
 interface State {
