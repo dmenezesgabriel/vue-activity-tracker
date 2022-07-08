@@ -19,10 +19,9 @@
 
 <script lang="ts">
 import { NotificationType } from "@/interfaces/INotification";
-import { useNotificationStore } from "@/stores/notifications";
 import { useProjectStore } from "@/stores/project";
 import { defineComponent } from "vue";
-
+import { notificationMixin } from "@/mixins/notify";
 export default defineComponent({
   name: "Form",
   props: {
@@ -30,14 +29,7 @@ export default defineComponent({
       type: String,
     },
   },
-  mounted() {
-    if (this.id) {
-      const project = this.projectStore.$state.projects.find(
-        (project) => project.id === this.id
-      );
-      this.projectName = project?.name || "";
-    }
-  },
+  mixins: [notificationMixin],
   data() {
     return {
       projectName: "",
@@ -54,23 +46,28 @@ export default defineComponent({
         this.projectStore.addProject(this.projectName);
       }
       this.projectName = "";
-      this.notificationStore.addNotification({
-        id: 0,
-        title: "New project saved",
-        text: "Your project is already available",
-        type: NotificationType.SUCCESS,
-      });
+      this.notify(
+        NotificationType.SUCCESS,
+        "Nice!",
+        "Project successfully registered"
+      );
       this.$router.push("/projects");
     },
   },
   setup() {
     const projectStore = useProjectStore();
-    const notificationStore = useNotificationStore();
 
     return {
       projectStore,
-      notificationStore,
     };
+  },
+  mounted() {
+    if (this.id) {
+      const project = this.projectStore.$state.projects.find(
+        (project) => project.id === this.id
+      );
+      this.projectName = project?.name || "";
+    }
   },
 });
 </script>

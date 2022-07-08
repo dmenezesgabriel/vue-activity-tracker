@@ -20,7 +20,7 @@ export const useNotificationStore = defineStore({
         this.notifications = this.notifications.filter(
           (notification) => notification.id != newNotification.id
         );
-      }, 300);
+      }, 3000);
     },
   },
 });
