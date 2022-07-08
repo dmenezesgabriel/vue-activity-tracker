@@ -1,10 +1,15 @@
 <template>
   <TaskBox>
-    <div class="column is-7">
-      {{ task.description || "No description provided" }}
-    </div>
-    <div class="column">
-      <TimeDisplay :timeInSeconds="task.timeInSeconds" />
+    <div class="columns">
+      <div class="column is-4">
+        {{ task.description || "No description provided" }}
+      </div>
+      <div class="column is-3">
+        {{ task.project?.name || "N/D" }}
+      </div>
+      <div class="column">
+        <TimeDisplay :timeInSeconds="task.timeInSeconds" />
+      </div>
     </div>
   </TaskBox>
 </template>
