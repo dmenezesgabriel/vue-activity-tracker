@@ -1,13 +1,26 @@
 <template>
   <TaskForm @onEndTask="saveTask" />
   <div class="list">
+    <TaskBox v-if="isTaskListEmpty"> Waiting for new tasks </TaskBox>
+    <div class="field">
+      <p class="control has-icons-left">
+        <input
+          type="text"
+          class="input"
+          placeholder="Type to filter"
+          v-model="searchedText"
+        />
+        <span class="icon is-small is-left">
+          <i class="fas fa-search"> </i>
+        </span>
+      </p>
+    </div>
     <TaskDisplay
       v-for="(task, index) in tasks"
       :key="index"
       :task="task"
       @onClickedTask="selectTask"
     />
-    <TaskBox v-if="isTaskListEmpty"> Waiting for new tasks </TaskBox>
     <div
       class="modal"
       :class="{ 'is-active': selectedTask }"
@@ -46,7 +59,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import TaskForm from "../components/TaskForm.vue";
 import TaskDisplay from "../components/TaskDisplay.vue";
 import type ITask from "../interfaces/ITask";
@@ -89,7 +102,18 @@ export default defineComponent({
     const tasksStore = useTaskStore();
     tasksStore.getTasks();
     console.log(tasksStore.$state.tasks);
-    return { tasksStore, tasks: computed(() => tasksStore.$state.tasks) };
+    const searchedText = ref("");
+    const tasks = computed(() =>
+      tasksStore.$state.tasks.filter(
+        (tk) =>
+          !searchedText.value || tk.description.includes(searchedText.value)
+      )
+    );
+    return {
+      tasksStore,
+      searchedText,
+      tasks,
+    };
   },
 });
 </script>
