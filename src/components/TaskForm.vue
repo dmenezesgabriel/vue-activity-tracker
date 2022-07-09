@@ -61,6 +61,7 @@ export default defineComponent({
   },
   setup() {
     const projectStore = useProjectStore();
+    projectStore.getProjects();
     return {
       projects: computed(() => projectStore.$state.projects),
     };
