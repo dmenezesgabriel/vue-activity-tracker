@@ -22,6 +22,7 @@ import { NotificationType } from "@/interfaces/INotification";
 import { useProjectStore } from "@/stores/project";
 import { defineComponent, ref } from "vue";
 import useNotifier from "@/hooks/notifier";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Form",
@@ -30,49 +31,11 @@ export default defineComponent({
       type: String,
     },
   },
-  methods: {
-    save(): void {
-      /**
-       * Persists a project
-       * @returns {void}
-       */
-
-      /**
-       * This conditional allow us to use the same form template to add or
-       * update a project
-       */
-      if (this.id) {
-        this.projectStore
-          .updateProject({
-            id: this.id,
-            name: this.projectName,
-          })
-          .then(() => {
-            this.handleSuccess();
-          });
-      } else {
-        this.projectStore.createProject(this.projectName).then(() => {
-          this.handleSuccess();
-        });
-      }
-    },
-    handleSuccess() {
-      /**
-       * Handle action success
-       */
-      this.projectName = "";
-      this.notify(
-        NotificationType.SUCCESS,
-        "Nice!",
-        "Project successfully registered"
-      );
-      this.$router.push("/projects");
-    },
-  },
   setup(props) {
-    const projectStore = useProjectStore();
+    const router = useRouter();
     const { notify } = useNotifier();
     const projectName = ref("");
+    const projectStore = useProjectStore();
 
     if (props.id) {
       console.log(projectStore.$state.projects);
@@ -82,10 +45,48 @@ export default defineComponent({
       projectName.value = project?.name || "";
     }
 
+    const handleSuccess = (): void => {
+      /**
+       * Handle action success
+       */
+      projectName.value = "";
+      notify(
+        NotificationType.SUCCESS,
+        "Nice!",
+        "Project successfully registered"
+      );
+      router.push("/projects");
+    };
+
+    const save = (): void => {
+      /**
+       * Persists a project
+       * @returns {void}
+       */
+
+      /**
+       * This conditional allow us to use the same form template to add or
+       * update a project
+       */
+      if (props.id) {
+        projectStore
+          .updateProject({
+            id: props.id,
+            name: projectName.value,
+          })
+          .then(() => {
+            handleSuccess();
+          });
+      } else {
+        projectStore.createProject(projectName.value).then(() => {
+          handleSuccess();
+        });
+      }
+    };
+
     return {
-      projectStore,
       projectName,
-      notify,
+      save,
     };
   },
 });

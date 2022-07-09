@@ -37,33 +37,39 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, ref } from "vue";
 import StopWatch from "./StopWatch.vue";
 import { useProjectStore } from "@/stores/project";
 export default defineComponent({
   name: "TaskForm",
   emits: ["onEndTask"],
-  data() {
-    return { taskDescription: "", projectId: "" };
-  },
   components: {
     StopWatch,
   },
-  methods: {
-    endTask(timeInSeconds: number): void {
-      this.$emit("onEndTask", {
-        timeInSeconds: timeInSeconds,
-        description: this.taskDescription,
-        project: this.projects.find((project) => project.id == this.projectId),
-      });
-      this.taskDescription = "";
-    },
-  },
-  setup() {
+  setup(props, { emit }) {
+    const taskDescription = ref("");
+    const projectId = ref("");
+    const projects = computed(() => projectStore.$state.projects);
     const projectStore = useProjectStore();
+
     projectStore.getProjects();
+
+    const endTask = (timeInSeconds: number): void => {
+      emit("onEndTask", {
+        timeInSeconds: timeInSeconds,
+        description: taskDescription.value,
+        project: projects.value.find(
+          (project) => project.id == projectId.value
+        ),
+      });
+      taskDescription.value = "";
+    };
+
     return {
-      projects: computed(() => projectStore.$state.projects),
+      taskDescription,
+      projectId,
+      endTask,
+      projects,
     };
   },
 });
