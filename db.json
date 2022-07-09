@@ -8,7 +8,7 @@
   "tasks": [
     {
       "timeInSeconds": 2,
-      "description": "Frita",
+      "description": "Fritas",
       "project": {
         "name": "Batata",
         "id": 1

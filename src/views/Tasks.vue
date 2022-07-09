@@ -21,40 +21,29 @@
       :task="task"
       @onClickedTask="selectTask"
     />
-    <div
-      class="modal"
-      :class="{ 'is-active': selectedTask }"
-      v-if="selectedTask"
-    >
-      <div class="modal-background"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title">Editing Task</p>
-          <button
-            class="delete"
-            aria-label="close"
-            @click="closeModal"
-          ></button>
-        </header>
-        <section class="modal-card-body">
-          <div class="field">
-            <label for="taskDescription" class="label">Task Description</label>
-            <input
-              type="text"
-              class="input"
-              id="taskName"
-              v-model="selectedTask.description"
-            />
-          </div>
-        </section>
-        <footer class="modal-card-foot">
-          <button class="button is-success" @click="updateTask">
-            Save changes
-          </button>
-          <button class="button" @click="closeModal">Cancel</button>
-        </footer>
-      </div>
-    </div>
+    <Modal :show="selectedTask != null">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Editing Task</p>
+        <button class="delete" aria-label="close" @click="closeModal"></button>
+      </header>
+      <section class="modal-card-body">
+        <div class="field">
+          <label for="taskDescription" class="label">Task Description</label>
+          <input
+            type="text"
+            class="input"
+            id="taskName"
+            v-model="selectedTask.description"
+          />
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-success" @click="updateTask">
+          Save changes
+        </button>
+        <button class="button" @click="closeModal">Cancel</button>
+      </footer>
+    </Modal>
   </div>
 </template>
 
@@ -66,12 +55,14 @@ import type ITask from "../interfaces/ITask";
 import TaskBox from "../components/TaskBox.vue";
 import { useTaskStore } from "@/stores/tasks";
 import { computed } from "@vue/reactivity";
+import Modal from "../components/Modal.vue";
 export default defineComponent({
   name: "Tasks",
   components: {
     TaskForm,
     TaskDisplay,
     TaskBox,
+    Modal,
   },
   data() {
     return {
