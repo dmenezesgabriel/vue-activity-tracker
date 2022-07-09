@@ -59,7 +59,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, watchEffect } from "vue";
 import TaskForm from "../components/TaskForm.vue";
 import TaskDisplay from "../components/TaskDisplay.vue";
 import type ITask from "../interfaces/ITask";
@@ -82,6 +82,8 @@ export default defineComponent({
     saveTask(task: ITask): void {
       this.tasksStore.createTask(task);
     },
+    // TODO
+    // Use Vue transitions with modal
     selectTask(task: ITask) {
       this.selectedTask = task;
     },
@@ -100,19 +102,22 @@ export default defineComponent({
   },
   setup() {
     const tasksStore = useTaskStore();
-    tasksStore.getTasks();
-    console.log(tasksStore.$state.tasks);
     const searchedText = ref("");
-    const tasks = computed(() =>
-      tasksStore.$state.tasks.filter(
-        (tk) =>
-          !searchedText.value || tk.description.includes(searchedText.value)
-      )
-    );
+    // const tasks = computed(() =>
+    //   tasksStore.$state.tasks.filter(
+    //     (tk) =>
+    //       !searchedText.value || tk.description.includes(searchedText.value)
+    //   )
+    // );
+    watchEffect(() => {
+      // TODO
+      // Apply debounce function
+      tasksStore.getTasks(searchedText.value);
+    });
     return {
       tasksStore,
       searchedText,
-      tasks,
+      tasks: computed(() => tasksStore.$state.tasks),
     };
   },
 });

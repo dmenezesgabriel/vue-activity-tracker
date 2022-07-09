@@ -12,12 +12,17 @@ export const useTaskStore = defineStore({
       tasks: [],
     } as State),
   actions: {
-    async getTasks(): Promise<void> {
+    async getTasks(filter: string): Promise<void> {
       /**
        * Fetch task from database and add to store
        * @returns {Promise<void>}
        */
-      http.get("tasks").then((response) => this.addTasks(response.data));
+      let url = "tasks";
+      if (filter) {
+        url += "?description=" + filter;
+      }
+      console.log(url);
+      http.get(url).then((response) => this.addTasks(response.data));
     },
     async createTask(task: ITask) {
       /**
