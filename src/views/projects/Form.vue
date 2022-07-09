@@ -20,7 +20,7 @@
 <script lang="ts">
 import { NotificationType } from "@/interfaces/INotification";
 import { useProjectStore } from "@/stores/project";
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import useNotifier from "@/hooks/notifier";
 
 export default defineComponent({
@@ -29,11 +29,6 @@ export default defineComponent({
     id: {
       type: String,
     },
-  },
-  data() {
-    return {
-      projectName: "",
-    };
   },
   methods: {
     save(): void {
@@ -74,25 +69,24 @@ export default defineComponent({
       this.$router.push("/projects");
     },
   },
-  setup() {
+  setup(props) {
     const projectStore = useProjectStore();
     const { notify } = useNotifier();
+    const projectName = ref("");
+
+    if (props.id) {
+      console.log(projectStore.$state.projects);
+      const project = projectStore.$state.projects.find(
+        (project) => project.id == props.id
+      );
+      projectName.value = project?.name || "";
+    }
+
     return {
       projectStore,
+      projectName,
       notify,
     };
-  },
-  mounted() {
-    /**
-     * Conditional for edit form
-     */
-    if (this.id) {
-      console.log(this.projectStore.$state.projects);
-      const project = this.projectStore.$state.projects.find(
-        (project) => project.id == this.id
-      );
-      this.projectName = project?.name || "";
-    }
   },
 });
 </script>
