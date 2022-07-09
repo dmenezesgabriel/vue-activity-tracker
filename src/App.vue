@@ -28,7 +28,6 @@ export default defineComponent({
   },
   methods: {
     switchTheme(isDarkThemeActive: boolean) {
-      console.log(`is: ${isDarkThemeActive}`);
       this.isDarkThemeActive = isDarkThemeActive;
     },
   },

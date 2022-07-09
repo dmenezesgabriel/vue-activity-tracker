@@ -38,7 +38,6 @@ export default defineComponent({
     const projectStore = useProjectStore();
 
     if (props.id) {
-      console.log(projectStore.$state.projects);
       const project = projectStore.$state.projects.find(
         (project) => project.id == props.id
       );

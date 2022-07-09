@@ -22,11 +22,11 @@
       @onClickedTask="selectTask"
     />
     <Modal :show="selectedTask != null">
-      <header class="modal-card-head">
+      <template v-slot:head>
         <p class="modal-card-title">Editing Task</p>
         <button class="delete" aria-label="close" @click="closeModal"></button>
-      </header>
-      <section class="modal-card-body">
+      </template>
+      <template v-slot:body>
         <div class="field">
           <label for="taskDescription" class="label">Task Description</label>
           <input
@@ -36,13 +36,13 @@
             v-model="selectedTask.description"
           />
         </div>
-      </section>
-      <footer class="modal-card-foot">
+      </template>
+      <template v-slot:footer>
         <button class="button is-success" @click="updateTask">
           Save changes
         </button>
         <button class="button" @click="closeModal">Cancel</button>
-      </footer>
+      </template>
     </Modal>
   </div>
 </template>

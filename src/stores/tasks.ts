@@ -21,7 +21,6 @@ export const useTaskStore = defineStore({
       if (filter) {
         url += "?description=" + filter;
       }
-      console.log(url);
       http.get(url).then((response) => this.addTasks(response.data));
     },
     async createTask(task: ITask) {
